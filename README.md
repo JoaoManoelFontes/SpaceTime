@@ -11,7 +11,7 @@
 
 #### Template do arquivo `server/.env`
 
-```json
+```javascript
 DATABASE_URL="file:./dev.db"
 GITHUB_CLIENT_SECRET=""
 GITHUB_CLIENT_ID=""
@@ -21,7 +21,7 @@ GITHUB_CLIENT_ID=""
 
 #### Template do arquivo `web/.env`
 
-``` json
+```javascript
 
 NEXT_PUBLIC_GITHUB_CLIENT_ID = c655eb2f9d4837d2e852
 ```
