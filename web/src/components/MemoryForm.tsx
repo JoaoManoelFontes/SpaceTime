@@ -3,6 +3,7 @@
 import { Camera } from 'lucide-react'
 import { MediaInput } from './MediaInput'
 import { FormEvent } from 'react'
+import Cookies from 'js-cookie'
 import { api } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 
@@ -12,22 +13,15 @@ export function MemoryForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
+    const token = Cookies.get('token')
     const formData = new FormData(event.currentTarget)
-    console.log(Array.from(formData.entries()))
     const file = formData.get('media')
 
     file && new FormData().set('media', file)
 
     const { data } = await api.post('/upload', formData)
 
-    console.log({
-      content: formData.get('content'),
-      isPublic: formData.get('isPublic'),
-      title: formData.get('title'),
-      media: data,
-    })
-
-    const response = await api.post(
+    await api.post(
       '/memories',
       {
         content: formData.get('content'),
@@ -38,11 +32,10 @@ export function MemoryForm() {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${document.cookie.substring(6)}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     )
-    console.log(response)
     router.push('/')
   }
 
