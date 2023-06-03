@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { SearchProfile } from '@/components/SearchProfile'
 
 interface Memory {
   id: string
@@ -33,6 +34,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-10 p-16">
+      <SearchProfile />
+
       {memories.map((memory) => {
         return (
           <div key={memory.id} className="space-y-4">

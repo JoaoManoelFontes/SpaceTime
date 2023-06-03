@@ -124,4 +124,33 @@ export async function memoriesRouter(app: FastifyInstance) {
         
         
     })
+
+    app.get('/memories/public/:userLogin', async (request) => {
+
+        const paramsSchema = z.object({
+            userLogin: z.string().min(1),
+        })
+
+        const {userLogin} = paramsSchema.parse(request.params)
+
+        const memories = await prisma.memory.findMany({
+            where:{
+                user: {
+                    login: userLogin
+                },
+                isPublic: true,
+            },
+            orderBy: {createdAt: 'asc'}
+        })
+
+        return memories.map((memory) => {
+            return {
+            id: memory.id,
+            title: memory.title,
+            excerpt: memory.content.length>100 ? memory.content.substring(0, 100) + '...' : memory.content,
+            media: memory.media,
+            createdAt: memory.createdAt,
+            }
+        })
+    })
 }

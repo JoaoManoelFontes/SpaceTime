@@ -18,8 +18,6 @@ export default async function Page() {
     },
   })
 
-  console.log(data)
-
   return (
     <div className="flex flex-1 flex-col gap-4 p-16">
       <div className="flex flex-col">
@@ -32,9 +30,12 @@ export default async function Page() {
         <h1 className="text-center font-secondary text-lg font-bold tracking-widest">
           {data.title}
         </h1>
-        <time className="p-2 text-right text-xs tracking-wide">
+        <time className="p-2 text-right text-xs tracking-wide opacity-40">
           {dayjs(data.createdAt).format('D[ de  ]MMM[, ]YYYY')}
         </time>
+        <p className="p-2 text-right text-xs tracking-wide opacity-40">
+          {data.isPublic ? 'Memória Pública' : 'Memória Privada'}
+        </p>
       </div>
       <Image
         src={data.media}
@@ -47,17 +48,6 @@ export default async function Page() {
       <p className="text-md break-normal font-thin leading-relaxed text-gray-300">
         {data.content}
       </p>
-
-      {/* {data.isPublic ? (
-        <span className="text-right">
-          <Check className="h4 w-4" />
-          Público
-        </span>
-      ) : (
-        <span>
-          <X className="h4 w-4" /> Privado
-        </span>
-      )} */}
 
       <hr className="border-gray-600" />
     </div>
