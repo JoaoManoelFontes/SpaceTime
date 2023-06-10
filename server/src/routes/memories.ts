@@ -20,7 +20,7 @@ export async function memoriesRouter(app: FastifyInstance) {
             return {
             id: memory.id,
             title: memory.title,
-            excerpt: memory.content.length>100 ? memory.content.substring(0, 100) + '...' : memory.content,
+            excerpt: memory.content.length>50 ? memory.content.substring(0, 50) + '...' : memory.content,
             media: memory.media,
             createdAt: memory.createdAt,
             }
@@ -147,7 +147,8 @@ export async function memoriesRouter(app: FastifyInstance) {
             return {
             id: memory.id,
             title: memory.title,
-            excerpt: memory.content.length>100 ? memory.content.substring(0, 100) + '...' : memory.content,
+            excerpt: memory.content.length>50 ? memory.content.substring(0, 50) + '...' : memory.content,
+            content: memory.content,
             media: memory.media,
             createdAt: memory.createdAt,
             }

@@ -26,7 +26,7 @@ export function SearchProfile() {
           placeholder="Pesquisar por perfil"
         />
         <button>
-          <Link href={`/memories/profile/?id=${search}`}>
+          <Link href={`/memories/profile/${search}`}>
             <Search className="h-4 w-6" />
           </Link>
         </button>

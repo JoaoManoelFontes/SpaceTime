@@ -1,41 +1,40 @@
-import { EmptyMemories } from '@/components/EmptyMemories'
+import { Memory } from '@/@types/memoryDetail'
 import { api } from '@/utils/api'
-import { cookies } from 'next/headers'
 import dayjs from 'dayjs'
+import { ArrowBigLeft } from 'lucide-react'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { SearchProfile } from '@/components/SearchProfile'
 
-interface Memory {
-  id: string
-  title: string
-  media: string
-  excerpt: string
-  createdAt: string
+interface Params {
+  params: {
+    id: string
+  }
 }
 
-export default async function Home() {
-  if (!cookies().has('token')) {
-    return <EmptyMemories />
-  }
+export default async function Page({ params }: Params) {
+  const { id } = params
+  const token = cookies().get('token')?.value
 
-  const { data } = await api.get('/memories', {
+  const response = await api.get(`/memories/public/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies().get('token')?.value}`,
+      Authorization: `Bearer ${token}`,
     },
   })
 
-  const memories: Memory[] = data
+  const memories: Array<Memory> = response.data
 
-  if (memories.length === 0) {
-    return <EmptyMemories />
+  if (memories.length === 0 || !memories) {
+    return <div>Perfil não existe ou não há nenhuma memória pública nele</div>
   }
-
   return (
     <div className="flex flex-col gap-10 p-16">
-      <SearchProfile />
-
+      <Link
+        href="/"
+        className="text-gray200 flex items-center gap-1 text-sm hover:text-gray-50"
+      >
+        <ArrowBigLeft className="h-7 w-7" />
+      </Link>
       {memories.map((memory) => {
         return (
           <div key={memory.id} className="space-y-4">
@@ -57,15 +56,7 @@ export default async function Home() {
 
             <br />
             <p className="text-md font-thin leading-relaxed text-gray-300">
-              {memory.excerpt}
-              <Link
-                href={`/memories/${memory.id}`}
-                className="flex justify-end gap-2 text-sm text-gray-500 hover:text-gray-300"
-              >
-                {' '}
-                Ler mais
-                <ArrowRight className="inline-block h-4 w-4" />
-              </Link>
+              {memory.content}
             </p>
             <hr className="border-gray-800" />
           </div>
