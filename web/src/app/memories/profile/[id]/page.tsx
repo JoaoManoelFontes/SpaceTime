@@ -25,7 +25,11 @@ export default async function Page({ params }: Params) {
   const memories: Array<Memory> = response.data
 
   if (memories.length === 0 || !memories) {
-    return <div>Perfil não existe ou não há nenhuma memória pública nele</div>
+    return (
+      <div className="mt-5 flex justify-center font-secondary">
+        Esse perfil não existe ou não há nenhuma memória pública nele!
+      </div>
+    )
   }
   return (
     <div className="flex flex-col gap-10 p-16">
