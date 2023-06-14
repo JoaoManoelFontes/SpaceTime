@@ -12,8 +12,8 @@
 
 ```javascript
 DATABASE_URL = "file:./dev.db";
-GITHUB_CLIENT_SECRET = "";
-GITHUB_CLIENT_ID = "";
+GITHUB_CLIENT_SECRET = "YOUR_GITHUB_CLIENT_SECRET";
+GITHUB_CLIENT_ID = "YOUR_GITHUB_CLIENT_ID";
 ```
 
 - Crie um arquivo `.env.local` na pasta `web` com as variáveis de ambiente
@@ -21,8 +21,10 @@ GITHUB_CLIENT_ID = "";
 #### Template do arquivo `web/.env`
 
 ```javascript
-NEXT_PUBLIC_GITHUB_CLIENT_ID = [CLIENT_ID];
+NEXT_PUBLIC_GITHUB_CLIENT_ID = YOUR_GITHUB_CLIENT_ID;
 ```
+
+Para mais informações sobre o sistema de autenticação com o GitHub, acesse [https://docs.github.com/pt/apps/oauth-apps](https://docs.github.com/pt/apps/oauth-apps)
 
 - Inicie o servidor com `npm run dev` na pasta `server`
 - Inicie o front-end com `npm run dev` na pasta `web`
