@@ -1,42 +1,52 @@
 'use client'
 
-import { Camera } from 'lucide-react'
-import { MediaInput } from './MediaInput'
-import { FormEvent } from 'react'
-import Cookies from 'js-cookie'
+import { Memory } from '@/@types/memoryDetail'
 import { api } from '@/utils/api'
+import cookie from 'js-cookie'
 import { useRouter } from 'next/navigation'
+import { MediaInput } from './MediaInput'
+import { Camera } from 'lucide-react'
+import { FormEvent } from 'react'
 
-export function MemoryForm() {
+interface UpdateMemoryProps {
+  memory: Memory
+}
+
+export function UpdateMemoryForm({ memory }: UpdateMemoryProps) {
   const router = useRouter()
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-
-    const token = Cookies.get('token')
-
     const formData = new FormData(event.currentTarget)
-    const file = formData.get('media')
 
-    file && new FormData().set('media', file)
+    let media = memory.media
 
-    const { data } = await api.post('/upload', formData)
+    const fileToUpload = formData.get('media') as File
 
-    await api.post(
-      '/memories',
+    if (fileToUpload.size > 0) {
+      new FormData().set('media', fileToUpload)
+
+      const uploadResponse = await api.post('/upload', formData)
+
+      media = uploadResponse.data.fileUrl
+    }
+
+    const token = cookie.get('token')
+    await api.put(
+      `/memory/${memory.id}`,
       {
+        media,
+        title: formData.get('title'),
         content: formData.get('content'),
         isPublic: formData.get('isPublic'),
-        title: formData.get('title'),
-        media: data,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       },
     )
+
     router.push('/')
   }
 
@@ -51,6 +61,7 @@ export function MemoryForm() {
         </label>
         <input
           type="text"
+          defaultValue={memory.title}
           name="title"
           id="title"
           className="text-md rounded border-gray-800 bg-transparent font-thin  text-gray-100 placeholder-gray-500 focus:border-gray-700 focus:ring-0 focus:ring-offset-0"
@@ -71,6 +82,7 @@ export function MemoryForm() {
             name="isPublic"
             id="isPublic"
             value="true"
+            defaultChecked={memory.isPublic}
             className="focus:ring-gray-5 h-4 w-4 rounded border-2 border-gray-400 bg-gray-700 text-white  focus:ring-0 focus:ring-offset-0"
           />
           <label
@@ -81,7 +93,7 @@ export function MemoryForm() {
           </label>
         </div>
       </div>
-      <MediaInput />
+      <MediaInput previewUrl={memory.media} />
       <label htmlFor="content" className="text-sm tracking-widest">
         Conteúdo
       </label>
@@ -90,6 +102,7 @@ export function MemoryForm() {
         id="content"
         spellCheck={false}
         placeholder="Escreva aqui sua memória..."
+        defaultValue={memory.content}
         rows={10}
         className="text-md ml-3 w-full resize-none rounded border-none bg-transparent p-0 font-thin leading-relaxed text-gray-100 placeholder:text-gray-500 focus:ring-0 focus:ring-offset-0"
       ></textarea>
@@ -98,7 +111,7 @@ export function MemoryForm() {
         type="submit"
         className="mt-4 inline-block  self-end rounded-full bg-gray-800  px-5 py-3 font-secondary text-sm uppercase leading-none tracking-widest text-white hover:bg-slate-500"
       >
-        Cadastrar
+        Atualizar
       </button>
     </form>
   )

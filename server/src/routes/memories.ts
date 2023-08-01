@@ -37,6 +37,7 @@ export async function memoriesRouter(app: FastifyInstance) {
             where: {id},
         })
         
+        
         if(memory.userId !== request.user.sub && !memory.isPublic ) {
                 return reply.status(401).send()
         }
@@ -69,6 +70,7 @@ export async function memoriesRouter(app: FastifyInstance) {
     })
 
     app.put('/memory/:id', async (request, reply) => {
+        
         const paramSchema = z.object({
             id: z.string().uuid(),
         })

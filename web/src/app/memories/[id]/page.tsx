@@ -5,6 +5,8 @@ import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowBigLeft } from 'lucide-react'
+import { getUser } from '@/utils/auth'
+import { UpdateMemoryForm } from '@/components/updateMemoryForm'
 
 interface Params {
   params: {
@@ -15,6 +17,7 @@ interface Params {
 export default async function DetailsMemoryPage({ params }: Params) {
   const { id } = params
   const token = cookies().get('token')?.value
+  const { sub } = getUser()
 
   const response = await api.get(`/memory/${id}`, {
     headers: {
@@ -40,19 +43,27 @@ export default async function DetailsMemoryPage({ params }: Params) {
           {memory.title}
         </h1>
       </div>
-      <Image
-        src={memory.media}
-        alt={memory.title}
-        width={592}
-        height={280}
-        className="aspect-video w-full rounded-lg object-cover"
-      />
+      {sub !== memory.userId ? (
+        <>
+          <Image
+            src={memory.media}
+            alt={memory.title}
+            width={592}
+            height={280}
+            className="aspect-video w-full rounded-lg object-cover"
+          />
 
-      <br />
-      <p className="text-md font-thin leading-relaxed text-gray-300">
-        {memory.content}
-      </p>
-      <hr className="border-gray-800" />
+          <br />
+          <p className="text-md font-thin leading-relaxed text-gray-300">
+            {memory.content}
+          </p>
+          <hr className="border-gray-800" />
+        </>
+      ) : (
+        <>
+          <UpdateMemoryForm memory={memory} />
+        </>
+      )}
     </div>
   )
 }

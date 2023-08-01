@@ -1,12 +1,15 @@
-/* eslint-disable react/jsx-no-undef */
 'use client'
 
 import { Trash } from 'lucide-react'
 import Image from 'next/image'
 import { ChangeEvent, useState, MouseEvent } from 'react'
 
-export function MediaInput() {
-  const [preview, setPreview] = useState<string | null>()
+interface IMediaPickerProps {
+  previewUrl?: string
+}
+
+export function MediaInput({ previewUrl }: IMediaPickerProps) {
+  const [preview, setPreview] = useState<string | null>(previewUrl ?? null)
 
   function onFileClicked(
     event: MouseEvent<HTMLInputElement, globalThis.MouseEvent>,
@@ -43,9 +46,9 @@ export function MediaInput() {
         <div className="flex flex-col gap-2">
           <Image
             src={preview}
-            alt=""
-            width={0}
-            height={0}
+            alt={preview}
+            width={592}
+            height={280}
             className="aspect-video w-full rounded-lg object-cover"
           />
           <Trash
