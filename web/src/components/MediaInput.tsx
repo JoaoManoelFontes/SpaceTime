@@ -52,7 +52,7 @@ export function MediaInput({ previewUrl }: IMediaPickerProps) {
             className="aspect-video w-full rounded-lg object-cover"
           />
           <Trash
-            className="h-4 w-4 cursor-pointer self-end text-right text-gray-400 hover:text-gray-200"
+            className="h-4 w-4 cursor-pointer self-end text-right text-gray-400 hover:text-red-900"
             onClick={onRemove}
           />
         </div>

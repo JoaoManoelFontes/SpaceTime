@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Trash } from 'lucide-react'
 import { SearchProfile } from '@/components/SearchProfile'
 
 interface Memory {
@@ -32,6 +32,14 @@ export default async function Home() {
     return <EmptyMemories />
   }
 
+  // function handleDeleteMemory(id: string) {
+  //   api.delete(`/memory/${id}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${cookies().get('token')?.value}`,
+  //     },
+  //   })
+  // }
+
   return (
     <div className="flex flex-col gap-10 p-16">
       <SearchProfile />
@@ -40,9 +48,14 @@ export default async function Home() {
         return (
           <div key={memory.id} className="space-y-4">
             <div className="flex flex-col">
-              <time className="-ml-8 flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-3 before:bg-gray-100 ">
-                {dayjs(memory.createdAt).format('D[ de ]MMM[, ]YYYY')}
-              </time>
+              <div className="flex flex-row justify-between">
+                <time className="-ml-8 flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-3 before:bg-gray-100 ">
+                  {dayjs(memory.createdAt).format('D[ de ]MMM[, ]YYYY')}
+                </time>
+                <a href={`/api/memories/?id=${memory.id}`}>
+                  <Trash className="h-5 w-5 cursor-pointer self-end text-right text-gray-400 hover:text-red-900" />
+                </a>
+              </div>
               <h1 className="text-center font-secondary text-lg font-bold tracking-widest">
                 {memory.title}
               </h1>

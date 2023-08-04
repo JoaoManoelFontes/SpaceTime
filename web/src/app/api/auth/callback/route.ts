@@ -2,6 +2,8 @@ import { api } from '@/utils/api'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
+  console.log(request.nextUrl)
+
   const { searchParams } = new URL(request.nextUrl)
   const code = searchParams.get('code')
 

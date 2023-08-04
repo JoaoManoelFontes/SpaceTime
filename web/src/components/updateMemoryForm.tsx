@@ -27,8 +27,7 @@ export function UpdateMemoryForm({ memory }: UpdateMemoryProps) {
       new FormData().set('media', fileToUpload)
 
       const uploadResponse = await api.post('/upload', formData)
-
-      media = uploadResponse.data.fileUrl
+      media = uploadResponse.data
     }
 
     const token = cookie.get('token')
