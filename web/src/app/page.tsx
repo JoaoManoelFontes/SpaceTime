@@ -12,7 +12,7 @@ interface Memory {
   title: string
   media: string
   excerpt: string
-  createdAt: string
+  date: string
 }
 
 export default async function Home() {
@@ -50,7 +50,7 @@ export default async function Home() {
             <div className="flex flex-col">
               <div className="flex flex-row justify-between">
                 <time className="-ml-8 flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-3 before:bg-gray-100 ">
-                  {dayjs(memory.createdAt).format('D[ de ]MMM[, ]YYYY')}
+                  {dayjs(memory.date).format('D[ de ]MMM[, ]YYYY')}
                 </time>
                 <a href={`/api/memories/?id=${memory.id}`}>
                   <Trash className="h-5 w-5 cursor-pointer self-end text-right text-gray-400 hover:text-red-900" />

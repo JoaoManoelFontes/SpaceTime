@@ -38,6 +38,7 @@ export function UpdateMemoryForm({ memory }: UpdateMemoryProps) {
         title: formData.get('title'),
         content: formData.get('content'),
         isPublic: formData.get('isPublic'),
+        date: formData.get('date'),
       },
       {
         headers: {
@@ -93,6 +94,22 @@ export function UpdateMemoryForm({ memory }: UpdateMemoryProps) {
         </div>
       </div>
       <MediaInput previewUrl={memory.media} />
+      <div className="flex flex-col gap-1">
+        <label
+          htmlFor="date"
+          className=" flex cursor-pointer items-center  gap-1.5 text-sm hover:text-gray-50 hover:underline"
+        >
+          Data
+        </label>
+        <input
+          type="date"
+          name="date"
+          defaultValue={memory.date}
+          id="date"
+          className="text-md rounded border-gray-800 bg-transparent font-thin  text-gray-400 placeholder-gray-500 focus:border-gray-700 focus:ring-0 focus:ring-offset-0"
+        />
+      </div>
+
       <label htmlFor="content" className="text-sm tracking-widest">
         Conteúdo
       </label>

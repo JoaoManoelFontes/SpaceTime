@@ -14,7 +14,7 @@ export async function memoriesRouter(app: FastifyInstance) {
             where:{
                 userId: request.user.sub,
             },
-            orderBy: {createdAt: 'asc'}
+            orderBy: {date: 'asc'}
         })
         return memories.map((memory) => {
             return {
@@ -22,7 +22,7 @@ export async function memoriesRouter(app: FastifyInstance) {
             title: memory.title,
             excerpt: memory.content.length>50 ? memory.content.substring(0, 50) + '...' : memory.content,
             media: memory.media,
-            createdAt: memory.createdAt,
+            date: memory.date
             }
         })
     })
@@ -46,25 +46,28 @@ export async function memoriesRouter(app: FastifyInstance) {
     })
 
     app.post('/memories', async (request) => {
+        
         const bodySchema = z.object({
             content: z.string().min(1).max(1000),
             isPublic: z.coerce.boolean().default(false),
             title: z.string().min(1).max(50),
-            media: z.string()
+            media: z.string(),
+            date: z.string(),
         })
 
-        const {content, isPublic, title, media} = bodySchema.parse(request.body)
-
+        const {content, isPublic, title, media, date} = bodySchema.parse(request.body)        
+        
         const memory = await prisma.memory.create({
             data: {
                 content,
                 isPublic,
                 title,
                 media,
+                date,
                 userId: request.user.sub,
             },
         })
-
+        
         return memory
 
     })
@@ -80,10 +83,11 @@ export async function memoriesRouter(app: FastifyInstance) {
             content: z.string().min(1).max(1000),
             isPublic: z.coerce.boolean().default(false),
             title: z.string().min(1).max(50),
-            media: z.string()
+            media: z.string(),
+            date: z.string(),
         })
 
-        const {content, isPublic, title, media} = bodySchema.parse(request.body)
+        const {content, isPublic, title, media, date} = bodySchema.parse(request.body)
 
         let memory = await prisma.memory.findUniqueOrThrow({
             where: {id},
@@ -100,6 +104,7 @@ export async function memoriesRouter(app: FastifyInstance) {
                 isPublic,
                 title,
                 media,
+                date,
             },
         })
 
@@ -142,7 +147,7 @@ export async function memoriesRouter(app: FastifyInstance) {
                 },
                 isPublic: true,
             },
-            orderBy: {createdAt: 'asc'}
+            orderBy: {date: 'asc'}
         })
 
         return memories.map((memory) => {
@@ -152,7 +157,7 @@ export async function memoriesRouter(app: FastifyInstance) {
             excerpt: memory.content.length>50 ? memory.content.substring(0, 50) + '...' : memory.content,
             content: memory.content,
             media: memory.media,
-            createdAt: memory.createdAt,
+            date: memory.date,
             }
         })
     })

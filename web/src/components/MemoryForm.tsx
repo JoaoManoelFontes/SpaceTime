@@ -28,6 +28,7 @@ export function MemoryForm() {
         content: formData.get('content'),
         isPublic: formData.get('isPublic'),
         title: formData.get('title'),
+        date: formData.get('date'),
         media: data,
       },
       {
@@ -65,6 +66,7 @@ export function MemoryForm() {
           <Camera className="h-4 w-4" />
           Anexar imagens, fotos, etc
         </label>
+
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -82,7 +84,21 @@ export function MemoryForm() {
         </div>
       </div>
       <MediaInput />
-      <label htmlFor="content" className="text-sm tracking-widest">
+      <div className="flex flex-col gap-1">
+        <label
+          htmlFor="date"
+          className=" flex cursor-pointer items-center  gap-1.5 text-sm hover:text-gray-50 hover:underline"
+        >
+          Data
+        </label>
+        <input
+          type="date"
+          name="date"
+          id="date"
+          className="text-md rounded border-gray-800 bg-transparent font-thin  text-gray-400 placeholder-gray-500 focus:border-gray-700 focus:ring-0 focus:ring-offset-0"
+        />
+      </div>
+      <label htmlFor="content" className="mt-1 text-sm tracking-widest">
         Conteúdo
       </label>
       <textarea
