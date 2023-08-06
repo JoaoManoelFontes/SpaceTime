@@ -4,6 +4,7 @@ export interface Memory {
   excerpt?: string
   content: string
   media: string
+  date: string
   userId: string
   createdAt: string
   updatedAt: string
